@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+doc{
+color:red;
+}
+</style>
+</head>
+<body>
+
+<pre>
+
+
+'''
+<doc>DDA</doc>
+#include <graphics.h>
+#include <math.h>
+#include <conio.h>
+
+void main() {
+    int x0, y0, x1, y1, i = 0;
+    float delx, dely, len, x, y, xi, yi;
+    int gd = DETECT, gm;
+
+    initgraph(&gd, &gm, "C:\\tc\\BGI");
+    printf("\n***** DDA Line Drawing Algorithm *****\n");
+    printf("\nPlease enter the starting coordinates of x, y = ");
+    scanf("%d %d", &x0, &y0);
+    printf("\nEnter the final coordinates of x, y = ");
+    scanf("%d %d", &x1, &y1);
+    
+    dely = abs(y1 - y0);
+    delx = abs(x1 - x0);
+    
+    if (delx < dely) {
+        len = dely;
+    } else {
+        len = delx;
+    }
+    
+    xi = (x1 - x0) / len;
+    yi = (y1 - y0) / len;
+    
+    x = x0 + (0.5 * delx);
+    y = y0 + (0.5 * dely);
+    
+    do {
+        putpixel(x, y, YELLOW);
+        x = x + xi;
+        y = y + yi;
+        i++;
+    } while (i <= len);
+    
+    getch();
+    closegraph();
+}
+'''
+
+'''
+<doc>Ecllipse</doc>
+
+#include <stdio.h>
+#include <graphics.h>
+#include<conio.h>
+#include <math.h>
+int main () {
+int xc,yc,rx,ry,x,y;
+float p;
+int gd = DETECT,gm,color;
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+printf("\n******** Ellipse Drawing Algorithm\n\n");
+printf("please enter the center and rx,ry of the ellipse=");
+scanf("%d %d %d %d",&xc,&yc,&rx,&ry);
+x = 0;
+y = ry;
+p = (ry * ry)-(rx * rx * ry)+((rx * rx)/4);
+while ((2 * x * ry * ry)<(2 * y * rx * rx))
+{
+putpixel(xc+x, yc-y,RED);
+putpixel(xc-x,yc+y,CYAN);
+putpixel(xc+x,yc+y,WHITE);
+putpixel(xc-x,yc-y,GREEN);
+if(p<0)
+{ x=x+1;
+p=p+(2*ry*ry*x)+(ry*ry);
+}
+else
+{ x=x+1;
+y=y-1;
+p=p+(2*ry*ry*x)-(2*rx*rx*y)+(ry*ry);
+}
+}
+p=((float)x+0.5)*((float)x+0.5)*ry*ry+(y-1)*(y-1)*rx*rx-rx*rx*ry*ry;
+while(y>=0)
+{
+putpixel(xc+x, yc-y,RED);
+putpixel(xc-x,yc+y,CYAN);
+putpixel(xc+x,yc+y,WHITE);
+putpixel(xc-x,yc-y,GREEN);
+if(p>0)
+{ y=y-1;
+p=p-(2*rx*rx*y)+(rx*rx);
+}
+else
+{ x=x+1;
+y=y-1;
+p=p+(2*ry*ry*x)-(2*rx*rx*y)+(rx*rx);
+}
+}
+getch();
+closegraph();
+return 0;
+}
+'''
+'''
+<doc>Cohen Sutherland</doc>
+
+#include<stdio.h>
+#include<graphics.h>
+#include<conio.h>
+#include<math.h>
+void main()
+{
+int a[4],b[4];
+float m,xnew,ynew;
+float x1=100,y1=100,xh=300,yh=300,xa=10,xb=250,yb=150,ya=200;
+int gd=DETECT,gm;
+initgraph(&gd,&gm,"C:\\TC\\BGI");
+setcolor(5);
+line(xa,ya,xb,yb);
+setcolor(12);
+rectangle(x1,y1,xh,yh);
+m = (yb-ya)/(xb-xa);
+if(xa<x1)
+a[3]=1;
+else a[3]=0;
+if(xa>xh)
+a[2]=1;
+else a[2]=0;
+if(ya<y1)
+a[1]=1;
+else a[1]=0;
+if(ya>yh)
+a[0]=1;
+else a[0]=0;
+if(xb<x1)
+b[3]=1;
+else b[3]=0;
+if(xb>xh)
+b[2]=1;
+else b[2]=0;
+if(yb<y1)
+b[1]=1;
+else b[1]=0;
+if(yb>yh)
+b[0]=1;
+else b[0]=0;
+printf("press a key to continue");
+getch();
+if(a[0] == 0 && a[1] == 0 && a[2] == 0 && a[3] == 0 && b[0] == 0 && b[1] == 0 &&
+b[2] == 0 && b[3] == 0)
+{
+printf("no clipping");
+line(xa,xb,ya,yb);
+}
+else if(a[0]&&b[0] || a[1]&&b[1] || a[2]&&b[2] || a[3]&&b[3])
+{
+clrscr();
+printf("line discarded");
+rectangle(x1,y1,xh,yh);
+}
+else
+{
+if(a[2] == 0 && a[3] == 1)
+{
+ynew = (m*(x1-xa)) + ya;
+setcolor(12);
+rectangle(x1,y1,xh,yh);
+setcolor(0);
+line(xa,ya,xb,yb);
+setcolor(15);
+line(x1,ynew,xb,yb);
+}
+else if(b[2] == 0 && b[3] == 1)
+{
+ynew = (m*(x1-xa)) + ya;
+setcolor(12);
+rectangle(x1,y1,xh,yh);
+setcolor(0);
+line(xa,ya,xb,yb);
+setcolor(15);
+line (x1,ynew, xb,yb);
+}
+else if(a[0] == 0 && a[1] == 1)
+{
+xnew = xa + (y1-ya)/m;
+setcolor(0);
+line(xa,ya, xb,yb);
+setcolor (15);
+line(xnew, yh, xb,yb);
+}
+else if(b[0] == 0 && b[1] == 1)
+{
+xnew = xa + (y1-ya)/m;
+setcolor(0);
+line(xa,ya, xb,yb);
+setcolor (15);
+line (xnew, yh, xb,yb);
+}
+else if(a[2] == 1 && a[3] == 0)
+{
+ynew = (m*(xh-xa)) + ya;
+setcolor (12);
+rectangle(x1,y1, xh,yh);
+setcolor(0);
+line(xa,ya, xb,yb);
+setcolor (15);
+line(x1,ynew, xb,yb);
+}
+else if(b[2] == 1 && b[3] == 0)
+{
+ynew = (m*(xh-xa)) + ya;
+setcolor (12);
+rectangle(x1,y1,xh,yh);
+setcolor(0);
+line(xa,ya, xb,yb);
+setcolor (15);
+line(x1,ynew, xb,yb);
+}
+else if(a[0] == 1 && a[1] == 0)
+{
+xnew = xa + (yh-ya)/m;
+setcolor(0);
+line(xa,ya, xb,yb);
+setcolor (15);
+line (xnew, yh, xb,yb);
+}
+else if(b[0] == 1 && b[1] == 0)
+{
+xnew = xa + (yh-ya)/m;
+setcolor(0);
+line(xa,ya, xb,yb);
+setcolor (15);
+line(xnew, yh, xb,yb);
+}
+getch();
+closegraph();
+}
+}
+'''
+
+'''
+<doc>midpoint circle</doc>
+
+#include <stdio.h>
+#include <graphics.h>
+#include <conio.h>
+#include <math.h>
+int main()
+{
+int xc, yc, r, x, y, P;
+int gd=DETECT, gm;
+initgraph(&gd, &gm, "C:\\tc\\BGI");
+printf("n*****MIDPOINT CIRCLE DRAWING ALGORITHM****\n");
+printf("Enter the coordinates of the centre: ");
+scanf("%dr%d",&xc, &yc);
+printf("Enter the radius of the circle: ");
+scanf("%d",&r);
+x=0;
+y=r;
+P=1-r;
+while(y>x)
+{
+if(P<0)
+{
+P=P+2*x+3;
+x=x+1;
+}
+else
+{
+P=P+2*x-2*y+5;
+x=x+1;
+y=y-1;
+}
+putpixel(xc+x, yc+y, YELLOW);
+putpixel(yc+y, xc+x, YELLOW);
+putpixel(xc+x, yc-y, YELLOW);
+putpixel(yc+y, xc-x, YELLOW);
+putpixel(xc-x, yc+y, YELLOW);
+putpixel(yc-y, xc+x, YELLOW);
+putpixel(xc-x, yc-y, YELLOW);
+putpixel(yc-y, xc-x, YELLOW);
+}
+getch();
+closegraph();
+return 0;
+}
+'''
+'''
+<doc>3d object parrel perspective</doc>
+
+#include<graphics.h>
+#include<iostream.h>
+#include<conio.h>
+int gd,gm,x1,y1,x2,y2,dep,ch;
+void main()
+{
+cout<<"\n Enter the TOP-LEFT and BOTTOM-RIGHT corner:";
+cin>>x1>>y1>>x2>>y2;
+cout<<"\n Enter the depth along z axis:";
+cin>>dep;
+do
+{
+cout<<"Choode any one projection;\n\t1.Parallel Projection\n\t2.Perspective
+Projection\nEnyter Your Choice: ";
+cin>>ch;
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+switch(ch)
+{
+case 1:
+rectangle(x2+100,y1,x2+100+dep,y2);
+outtextxy(x2+100,y1-10,"SIDE VIEW");
+rectangle(x1,y1,x2,y2);
+outtextxy(x1,y1-10,"FRONT VIEW");
+rectangle(x1,y1-(y2-y1),x2,x1+dep-(y2-y1));
+outtextxy(x1,y1-(y2-y1)-10,"TOP VIEW");
+getch();
+closegraph();
+break;
+case 2:
+bar3d(x1,y1,x2,y2,dep,1);
+getch();
+closegraph();
+break;
+}
+}
+while(ch<3);
+}
+'''
+'''
+<doc>brehanms</doc>
+
+#include<graphics.h>
+#include<stdio.h>
+#include<conio.h>
+#include<math.h>
+int main()
+{
+int x0, y0, x1, y1, dx, dy, x, y, P;
+int gd = DETECT, gm;
+initgraph(&gd, &gm,"C:\\tc\\BGI");
+printf("\n*****BRESENHAM'S LINE DRAWING
+ALGORITHM*****\n");
+printf("\n Enter the starting coordinates of (x,y) = ");
+scanf("%d %d",&x0, &y0);
+printf("\n Enter the final coordinates (x,y) = ");
+scanf("%d %d",&x1, &y1);
+x = x0;
+y = y0;
+dx = abs(y1-y0);
+dy = abs(x1-x0);
+P = 2*dy-dx;
+while(x<=x1)
+{
+if(P>=0)
+{
+x = x+1;
+y = y+1;
+P = P+2*dy-2*dx;
+putpixel(x,y, CYAN);
+}
+else
+{
+x = x+1;
+P = P+2*dy;
+putpixel(x,y, CYAN);
+}
+}
+getch();
+closegraph();
+return 0;
+}
+'''
+'''
+<doc>flood fill</doc>
+
+#include<stdio.h>
+#include<graphics.h>
+#include<conio.h>
+#include<math.h>
+void flood(int,int,int,int);
+void main()
+{
+int gd,gm=DETECT;
+clrscr();
+detectgraph(&gd,&gm);
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+rectangle(50,50,100,100);
+flood(55,55,9,0);
+getch();
+closegraph();
+}
+void flood(int x, int y, int fill, int old)
+{ if(getpixel(x,y)==old)
+{delay(10);
+putpixel(x,y,fill);
+flood(x+1,y,fill,old);
+flood(x-1,y,fill,old);
+flood(x,y+1,fill,old);
+flood(x,y-1,fill,old);
+}
+}
+'''
+'''
+<doc>BOUNDARY FILL CONNECTIVITY</doc>
+#include<stdio.h>
+#include<graphics.h>
+#include<conio.h>
+#include<math.h>
+void boundary(int x, int y, int f, int b)
+{
+if((getpixel(x,y)!=b) && (getpixel(x,y)!=f))
+{delay(10);
+putpixel(x,y,f);
+boundary(x+1,y,f,b);
+boundary(x-1,y,f,b);
+boundary(x,y+1,f,b);
+boundary(x,y-1,f,b);
+}
+}
+void main()
+{
+int x, y, f, b;
+int gd,gm=DETECT;
+clrscr();
+detectgraph(&gd,&gm);
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+printf("Enter he seed point x,y:");
+scanf("%d %d",&x,&y);
+printf("enter the boundary color:");
+scanf("%d", &b);
+printf("enter the fill coulor:");
+scanf("%d",&f);
+circle(100,200,45);
+boundary(x,y,f,b);
+getch();
+closegraph();
+}
+'''
+
+'''
+<doc>2D transformations.</doc>
+
+#include <stdio.h>
+#include <graphics.h>
+#include<conio.h>
+#include <math.h>
+int main () {
+int x1,x2,x3,y1,y2,y3,nx1,nx2,nx3,ny1,ny2,ny3,sx,sy,tx,ty,c;
+float r,t,shx,shy;
+int gd = DETECT,gm,color;
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+printf("\n******** Program for 2D transformation ************\n\n");
+printf("Please enter the co-ordinates of triangle=");
+setcolor(RED);
+scanf("%d %d %d %d %d %d",&x1,&y1,&x2,&y2,&x3,&y3);
+line(x1,y1,x2,y2);
+line(x2,y2,x3,y3);
+line(x3,y3,x1,y1);
+getch();
+printf("\n1.Scaling");
+printf("\n2.Translation");
+printf("\n3.Rotation");
+printf("\n4.Exit") ;
+printf("\nEnter the choice: ");
+scanf("%d", &c);
+switch(c)
+{
+case 1:
+printf("\nEnter scaling factors: ");
+scanf("%d %d",&sx,&sy);
+nx1=x1*sx;
+nx2=x2*sx;
+nx3=x3*sx;
+ny1=y1*sy;
+ny2=y2*sy;
+ny3=y3*sy;
+setcolor(CYAN);
+line(nx1,ny1,nx2,ny2);
+line(nx2,ny2,nx3,ny3);
+line(nx3,ny3,nx1,ny1);
+getch();
+break;
+case 2:
+printf("\nEnter the translation vectors: ");
+scanf("%d %d",&tx,&ty);
+nx1=x1+tx;
+nx2=x2+tx;
+nx3=x3+tx;
+ny1=y1+ty;
+ny2=y2+ty;
+ny3=y3+ty;
+setcolor(YELLOW);
+line(nx1,ny1,nx2,ny2);
+line(nx2,ny2,nx3,ny3);
+line(nx3,ny3,nx1,ny1);
+getch();
+break;
+case 3:
+printf("\nEnter the angle: ");
+scanf("%d",&r);
+t=(3.14*r)/180;
+nx1=abs(x1*cos(t)-y1*sin(t));
+ny1=abs(x1*sin(t)+y1*cos(t));
+nx2=abs(x2*cos(t)-y2*sin(t));
+ny2=abs(x2*sin(t)+y2*cos(t));
+nx3=abs(x3*cos(t)-y3*sin(t));
+ny3=abs(x3*sin(t)+y3*cos(t));
+setcolor(YELLOW);
+line(nx1,ny1,nx2,ny2);
+line(nx2,ny2,nx3,ny3);
+line(nx3,ny3,nx1,ny1);
+getch();
+break;
+case 4:
+printf("EXIT");
+break;
+}
+getch();
+closegraph();
+return 0;
+}
+'''
+
+'''
+<doc>2D transformations.</doc>
+
+#include <stdio.h>
+#include <graphics.h>
+#include <math.h>
+#include <conio.h>
+void main()
+{int gd=DETECT, gm,ax,x1=100;
+int x2= 100, x3=200, y1=100;
+int y2=200, y3=100;
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+cleardevice();
+line(getmaxx()/2, 0, getmaxx()/2,getmaxy());
+line(0, getmaxy()/2, getmaxx(), getmaxy()/2);
+printf("Before reflection object:");
+setcolor(14);
+line (x1, y1, x2, y2);
+line(x2, y2, x3,y3);
+line(x3,y3,x1,y1);
+getch();
+//Reflection about origin
+printf("\nAfter reflection:");
+setcolor(4);
+line(getmaxx()-x1,getmaxy()-y1, getmaxx()-x2,getmaxy()-y2);
+line(getmaxx()-x2,getmaxy()-y2,getmaxx()-x3,getmaxy()-y3);
+line(getmaxx()-x3, getmaxy()-y3,getmaxx()-x1,getmaxy()-y1);
+//Reflection about X-axis
+setcolor(3);
+line(getmaxx() -x1,y1,getmaxx()-x2,y2);
+line(getmaxx()-x2,y2,getmaxx()-x3,y3);
+line(getmaxx()- x3,y3, getmaxx()-x1,y1);
+//Reflection about y axis
+setcolor(2);
+line(x1, getmaxy()-y1,x2, getmaxy()-y2);
+line(x2, getmaxy()-y2,x3,getmaxy()-y3);
+line(x3, getmaxy()-y3,x1,getmaxy()-y1);
+getch();
+closegraph();}
+'''
+
+
+'''
+
+<doc>shear</doc>
+
+include <stdio.h>
+#include <graphics.h>
+#include <math.h>
+#include <conio.h>
+void main()
+{int gd=DETECT, gm;
+float shx;
+initgraph(&gd,&gm,"C:\\tc\\BGI");
+printf("Enter the shear factor along x axis: ");
+scanf("%f",&shx);
+line(100,10,200,10);
+line(200,10,200,200);
+line(200,200,100,200);
+line(100,200,100,10);
+printf("X-shear");
+setcolor(12);
+line(100+(shx*10),10,200+(shx*10),10);
+line(200+(shx*10),10,200+(shx*200),200);
+line(200+(shx*200),200,100+(shx*200),200);
+line(100+(shx*200),200,100+(shx*10),10);
+getch();
+closegraph();
+}
+'''
+
+</pre>
+
+</body>
+</html>
+
